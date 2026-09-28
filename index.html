@@ -1,0 +1,817 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MC BATTLE 都道府県勢力図</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Helvetica Neue",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Arial,
+        sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      padding: 25px 30px;
+      background: #181818;
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #aaa;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: calc(100vh - 100px);
+    }
+
+    /* サイドバー */
+    .sidebar {
+      padding: 25px;
+      background: #1b1b1b;
+      border-right: 1px solid #333;
+    }
+
+    .sidebar h2 {
+      font-size: 18px;
+      margin-top: 0;
+    }
+
+    .control {
+      margin-bottom: 20px;
+    }
+
+    .control label {
+      display: block;
+      margin-bottom: 8px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      background: #292929;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .stats {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+
+    .stats-item {
+      margin-bottom: 15px;
+    }
+
+    .stats-title {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .stats-value {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    /* 地図 */
+    #map {
+      width: 100%;
+      height: calc(100vh - 100px);
+      min-height: 600px;
+      background: #101010;
+    }
+
+    /* 凡例 */
+    .legend {
+      background: rgba(20, 20, 20, 0.95);
+      padding: 12px;
+      line-height: 22px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .legend-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.9;
+    }
+
+    /* ポップアップ */
+    .popup {
+      color: #111;
+      min-width: 220px;
+    }
+
+    .popup h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+    }
+
+    .winner {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .winner:last-child {
+      border-bottom: none;
+    }
+
+    .winner-name {
+      font-weight: bold;
+    }
+
+    .winner-event {
+      font-size: 12px;
+      color: #777;
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
+
+      #map {
+        height: 70vh;
+        min-height: 500px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>MC BATTLE 都道府県勢力図</h1>
+  <p>MCバトル優勝者の出身地を日本地図に可視化</p>
+</header>
+
+<div class="container">
+
+  <!-- サイドバー -->
+  <aside class="sidebar">
+
+    <h2>検索・集計</h2>
+
+    <div class="control">
+      <label>大会</label>
+
+      <select id="eventSelect">
+        <option value="all">すべての大会</option>
+        <option value="UMB">UMB</option>
+        <option value="KOK">KING OF KINGS</option>
+        <option value="sen">戦極MCBATTLE</option>
+        <option value="gaisen">凱旋MC Battle</option>
+      </select>
+    </div>
+
+    <div class="control">
+      <label>年代</label>
+
+      <select id="yearSelect">
+        <option value="all">すべての年代</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+        <option value="2017">2017</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+      </select>
+    </div>
+
+    <div class="stats">
+
+      <div class="stats-item">
+        <div class="stats-title">
+          集計対象優勝者数
+        </div>
+
+        <div class="stats-value" id="totalWinners">
+          0
+        </div>
+      </div>
+
+      <div class="stats-item">
+        <div class="stats-title">
+          優勝者がいる都道府県
+        </div>
+
+        <div class="stats-value" id="totalPrefectures">
+          0
+        </div>
+      </div>
+
+      <div class="stats-item">
+        <div class="stats-title">
+          最多優勝都道府県
+        </div>
+
+        <div class="stats-value" id="topPrefecture">
+          -
+        </div>
+      </div>
+
+    </div>
+
+  </aside>
+
+  <!-- 地図 -->
+  <main>
+    <div id="map"></div>
+  </main>
+
+</div>
+
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+/* =========================================================
+   MC BATTLE データ
+   =========================================================
+
+   year     : 優勝年
+   event    : 大会名
+   mc       : MC名
+   prefecture : 出身都道府県
+
+   ↓ここにデータを追加していく
+========================================================= */
+
+const winners = [
+
+  /* UMB */
+
+  {
+    year: 2025,
+    event: "UMB",
+    mc: "優勝者A",
+    prefecture: "東京都"
+  },
+
+  {
+    year: 2024,
+    event: "UMB",
+    mc: "優勝者B",
+    prefecture: "大阪府"
+  },
+
+  {
+    year: 2023,
+    event: "UMB",
+    mc: "優勝者C",
+    prefecture: "青森県"
+  },
+
+  {
+    year: 2022,
+    event: "UMB",
+    mc: "優勝者D",
+    prefecture: "群馬県"
+  },
+
+  {
+    year: 2021,
+    event: "UMB",
+    mc: "優勝者E",
+    prefecture: "東京都"
+  },
+
+
+  /* KING OF KINGS */
+
+  {
+    year: 2025,
+    event: "KOK",
+    mc: "優勝者F",
+    prefecture: "大阪府"
+  },
+
+  {
+    year: 2024,
+    event: "KOK",
+    mc: "優勝者G",
+    prefecture: "東京都"
+  },
+
+  {
+    year: 2023,
+    event: "KOK",
+    mc: "優勝者H",
+    prefecture: "福岡県"
+  },
+
+
+  /* 戦極MCBATTLE */
+
+  {
+    year: 2025,
+    event: "sen",
+    mc: "優勝者I",
+    prefecture: "神奈川県"
+  },
+
+  {
+    year: 2024,
+    event: "sen",
+    mc: "優勝者J",
+    prefecture: "東京都"
+  },
+
+
+  /* 凱旋 */
+
+  {
+    year: 2025,
+    event: "gaisen",
+    mc: "優勝者K",
+    prefecture: "大阪府"
+  }
+
+];
+
+
+/* =========================================================
+   日本地図
+========================================================= */
+
+const map = L.map("map", {
+  zoomControl: true,
+  attributionControl: false
+}).setView([36.2, 138.3], 5);
+
+
+/*
+  日本の都道府県GeoJSON
+
+  ※GitHub上のGeoJSONを読み込み
+*/
+
+const geoJsonURL =
+  "https://raw.githubusercontent.com/dataofjapan/land/master/japan.geojson";
+
+
+let geoJsonLayer;
+
+
+/* =========================================================
+   色を決定
+========================================================= */
+
+function getColor(value) {
+
+  if (value >= 10) {
+    return "#8B0000";
+  }
+
+  if (value >= 7) {
+    return "#DC143C";
+  }
+
+  if (value >= 4) {
+    return "#FF8C00";
+  }
+
+  if (value >= 1) {
+    return "#FFD700";
+  }
+
+  return "#333333";
+}
+
+
+/* =========================================================
+   データ集計
+========================================================= */
+
+function getFilteredWinners() {
+
+  const event =
+    document.getElementById("eventSelect").value;
+
+  const year =
+    document.getElementById("yearSelect").value;
+
+  return winners.filter(winner => {
+
+    const eventMatch =
+      event === "all" ||
+      winner.event === event;
+
+    const yearMatch =
+      year === "all" ||
+      winner.year.toString() === year;
+
+    return eventMatch && yearMatch;
+
+  });
+}
+
+
+/* =========================================================
+   都道府県ごとの集計
+========================================================= */
+
+function aggregateData(data) {
+
+  const result = {};
+
+  data.forEach(winner => {
+
+    if (!result[winner.prefecture]) {
+      result[winner.prefecture] = [];
+    }
+
+    result[winner.prefecture].push(winner);
+
+  });
+
+  return result;
+}
+
+
+/* =========================================================
+   ポップアップ作成
+========================================================= */
+
+function createPopup(prefecture, data) {
+
+  let html = `
+    <div class="popup">
+
+      <h3>${prefecture}</h3>
+
+      <strong>
+        優勝回数：${data.length}回
+      </strong>
+
+      <hr>
+  `;
+
+  data.forEach(winner => {
+
+    html += `
+      <div class="winner">
+
+        <div class="winner-name">
+          ${winner.mc}
+        </div>
+
+        <div class="winner-event">
+          ${winner.year}年 / ${winner.event}
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  html += `</div>`;
+
+  return html;
+}
+
+
+/* =========================================================
+   地図更新
+========================================================= */
+
+function updateMap() {
+
+  const data =
+    getFilteredWinners();
+
+  const aggregated =
+    aggregateData(data);
+
+
+  /*
+    既存の地図を削除
+  */
+
+  if (geoJsonLayer) {
+    map.removeLayer(geoJsonLayer);
+  }
+
+
+  /*
+    GeoJSON読み込み
+  */
+
+  fetch(geoJsonURL)
+
+    .then(response => response.json())
+
+    .then(geojson => {
+
+      geoJsonLayer =
+        L.geoJSON(
+          geojson,
+          {
+
+            style: function(feature) {
+
+              /*
+                GeoJSONの都道府県名
+              */
+
+              const prefecture =
+                feature.properties.nam_ja ||
+                feature.properties.name ||
+                feature.properties.N03_001;
+
+              const count =
+                aggregated[prefecture]
+                  ? aggregated[prefecture].length
+                  : 0;
+
+
+              return {
+
+                fillColor:
+                  getColor(count),
+
+                weight: 1,
+
+                color: "#666",
+
+                fillOpacity: 0.75
+
+              };
+
+            },
+
+
+            onEachFeature:
+              function(feature, layer) {
+
+                const prefecture =
+                  feature.properties.nam_ja ||
+                  feature.properties.name ||
+                  feature.properties.N03_001;
+
+                const data =
+                  aggregated[prefecture] || [];
+
+
+                layer.bindPopup(
+                  createPopup(
+                    prefecture,
+                    data
+                  )
+                );
+
+
+                layer.on({
+
+                  mouseover:
+                    function(e) {
+
+                      e.target.setStyle({
+
+                        weight: 3,
+
+                        color: "#fff",
+
+                        fillOpacity: 0.9
+
+                      });
+
+                    },
+
+
+                  mouseout:
+                    function(e) {
+
+                      geoJsonLayer.resetStyle(
+                        e.target
+                      );
+
+                    }
+
+                });
+
+              }
+
+          }
+        ).addTo(map);
+
+
+      updateStatistics(
+        data,
+        aggregated
+      );
+
+    });
+
+}
+
+
+/* =========================================================
+   統計情報更新
+========================================================= */
+
+function updateStatistics(
+  data,
+  aggregated
+) {
+
+  document.getElementById(
+    "totalWinners"
+  ).textContent =
+    data.length;
+
+
+  document.getElementById(
+    "totalPrefectures"
+  ).textContent =
+    Object.keys(aggregated).length;
+
+
+  let top =
+    "-";
+
+
+  let max =
+    0;
+
+
+  Object.entries(
+    aggregated
+  ).forEach(
+    ([prefecture, winners]) => {
+
+      if (
+        winners.length > max
+      ) {
+
+        max =
+          winners.length;
+
+        top =
+          prefecture +
+          " " +
+          winners.length +
+          "回";
+
+      }
+
+    }
+  );
+
+
+  document.getElementById(
+    "topPrefecture"
+  ).textContent =
+    top;
+
+}
+
+
+/* =========================================================
+   フィルター変更
+========================================================= */
+
+document
+  .getElementById("eventSelect")
+  .addEventListener(
+    "change",
+    updateMap
+  );
+
+
+document
+  .getElementById("yearSelect")
+  .addEventListener(
+    "change",
+    updateMap
+  );
+
+
+/* =========================================================
+   凡例
+========================================================= */
+
+const legend =
+  L.control({
+    position: "bottomright"
+  });
+
+
+legend.onAdd =
+  function() {
+
+    const div =
+      L.DomUtil.create(
+        "div",
+        "legend"
+      );
+
+
+    div.innerHTML = `
+
+      <div class="legend-title">
+        優勝回数
+      </div>
+
+      <div>
+        <i style="background:#8B0000"></i>
+        10回以上
+      </div>
+
+      <div>
+        <i style="background:#DC143C"></i>
+        7～9回
+      </div>
+
+      <div>
+        <i style="background:#FF8C00"></i>
+        4～6回
+      </div>
+
+      <div>
+        <i style="background:#FFD700"></i>
+        1～3回
+      </div>
+
+      <div>
+        <i style="background:#333333"></i>
+        0回
+      </div>
+
+    `;
+
+
+    return div;
+
+  };
+
+
+legend.addTo(map);
+
+
+/* =========================================================
+   初期表示
+========================================================= */
+
+updateMap();
+
+</script>
+
+</body>
+</html>
+```

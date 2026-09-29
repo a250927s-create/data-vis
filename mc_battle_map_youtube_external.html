@@ -243,19 +243,35 @@
     }
 
     .battle-button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 12px;
-      border-radius: 5px;
-      background: #d71920;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-    }
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 9px 15px;
+  border-radius: 8px;
 
-    .battle-button:hover {
-      background: #b51218;
-    }
+  background: linear-gradient(135deg, #ff0033, #b00020);
+  color: #fff;
+
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 15px rgba(255, 0, 50, 0.25);
+
+  transition: all 0.25s ease;
+}
+
+.battle-button:hover {
+  background: linear-gradient(135deg, #ff1744, #ff0033);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 10px rgba(255, 0, 50, 0.6),
+    0 6px 20px rgba(255, 0, 50, 0.35);
+  color: #fff;
+}
 
     .no-video {
       margin-top: 10px;
@@ -429,7 +445,7 @@ const winners = [
     event: "UMB",
     mc: "FORK",
     prefecture: "神奈川県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/hJq1VFAeSoI?si=lg_bbj0E1j9MQdl1"
   },
 
   {
@@ -437,7 +453,7 @@ const winners = [
     event: "UMB",
     mc: "GOCCI",
     prefecture: "茨城県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/QBBvfWWkD1Q?si=2PRl7JP8nmL7f50G"
   },
 
   {
@@ -445,7 +461,7 @@ const winners = [
     event: "UMB",
     mc: "般若",
     prefecture: "東京都",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/WmMsu-04SGE?si=qaMmFDX6pRVH1SNw"
   },
 
   {
@@ -453,7 +469,7 @@ const winners = [
     event: "UMB",
     mc: "鎮座DOPENESS",
     prefecture: "東京都",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/mdHVDd5mKBA?si=RTytU0YEU0ZQM3sj"
   },
 
     {
@@ -461,7 +477,7 @@ const winners = [
         event: "UMB",
         mc: "晋平太",
         prefecture: "東京都",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/SG8OFUAnB6E?si=IvhmBe-u_AHptbMF"
     },
     
     {
@@ -469,7 +485,7 @@ const winners = [
         event: "UMB",
         mc: "晋平太",
         prefecture: "東京都",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/oISlhEwr5g8?si=k34nr_THPOIonbS7"
     },
     
     {
@@ -477,7 +493,7 @@ const winners = [
         event: "UMB",
         mc: "R-指定",
         prefecture: "大阪府",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/6VWsBVmXN2s?si=OR_mrw5KQ0Zrjg8S"
     },
     
     {
@@ -485,7 +501,7 @@ const winners = [
         event: "UMB",
         mc: "R-指定",
         prefecture: "大阪府",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/DKoMbG6gy7Y?si=A6Qi1kkuVNUuAFZd"
     },
     
     {
@@ -493,7 +509,7 @@ const winners = [
         event: "UMB",
         mc: "R-指定",
         prefecture: "大阪府",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/jOPWapsV3bc?si=wZlfi_iXNW7Ep7pm"
     },
     
     {
@@ -501,7 +517,7 @@ const winners = [
         event: "UMB",
         mc: "CHICO CARLITO",
         prefecture: "沖縄県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/5RJNnWSK_M4?si=aRq_jh0z_dgCHsY3"
     },
 
     {
@@ -509,7 +525,7 @@ const winners = [
         event: "UMB",
         mc: "NAIKA MC",
         prefecture: "群馬県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/9q1_Nbagzog?si=d1ih75hHF6Xe-sQV"
     },
     
     {
@@ -517,7 +533,7 @@ const winners = [
         event: "UMB",
         mc: "DOTAMA",
         prefecture: "東京都",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/S6Z7e4Spig0?si=zgP3O5g0QTKBF2bQ"
     },
     
     {
@@ -525,7 +541,7 @@ const winners = [
         event: "UMB",
         mc: "MU-TON",
         prefecture: "福島県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/tFZjJVFgHpo?si=ehbMOFdUrTFFfeVy"
     },
     
     {
@@ -533,7 +549,7 @@ const winners = [
         event: "UMB",
         mc: "Authority",
         prefecture: "青森県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/_WvB_2wD7gk?si=4bCfrQLRrOXDGLLS"
     },
     
     {
@@ -541,7 +557,7 @@ const winners = [
         event: "UMB",
         mc: "早雲",
         prefecture: "京都府",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/5RNTlEUEfSg?si=YVnD-qHyakQ-P0U6"
     },
     
     {
@@ -549,7 +565,7 @@ const winners = [
         event: "UMB",
         mc: "MC☆ニガリ a.k.a 赤い稲妻",
         prefecture: "茨城県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/mSKFssDdg1o?si=UYxddrJRn_KqgGpo"
     },
     
     {
@@ -557,7 +573,7 @@ const winners = [
         event: "UMB",
         mc: "SILENT KILLA JOINT",
         prefecture: "兵庫県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/BsE6PCBNWkw?si=auV2QaJahyMCRx4A"
     },
     
     {
@@ -565,7 +581,7 @@ const winners = [
         event: "UMB",
         mc: "GOTIT",
         prefecture: "茨城県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/Ogy9hwi9L_o?si=74oky8p6rmlan871"
     },
     
     {
@@ -573,7 +589,7 @@ const winners = [
         event: "UMB",
         mc: "KOOPA",
         prefecture: "埼玉県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/f0n69ft35zM?si=UDVpDxH3nlfxA70m"
     },
     
     {
@@ -581,7 +597,7 @@ const winners = [
       event: "UMB",
       mc: "MC☆ニガリ a.k.a 赤い稲妻",
       prefecture: "長野県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/KnB9q2Z_dE0?si=DrkSDGdxeAkHQ_wN"
     },
 
     /* UMB THE CHOICE IS YOURS */
@@ -590,18 +606,18 @@ const winners = [
         event: "CHO",
         mc: "MOL53",
         prefecture: "宮崎県",
-    videoUrl: ""
+    videoUrl: "https://youtu.be/j4rclHAJITQ?si=-8dcT9WF4IlhIOFI"
         },
     {
         year: 2018,
         event: "CHO",
-        mc: "優勝者B",
-        prefecture: "大阪府",
-    videoUrl: ""
+        mc: "句潤",
+        prefecture: "神奈川県",
+    videoUrl: "https://youtu.be/HNW5Xm_07gk?si=tDxpjnvg4CVK32zb"
         },
     
         {
-        year: 2023,
+        year: 2019,
         event: "CHO",
         mc: "優勝者C",
         prefecture: "福岡県",

@@ -13,295 +13,452 @@
   />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Helvetica Neue",
-        "Yu Gothic",
-        "Hiragino Kaku Gothic ProN",
-        Arial,
-        sans-serif;
-      background: #111;
-      color: #fff;
-    }
+body {
+  margin: 0;
+  font-family: "Arial Black", "Helvetica Neue", "Yu Gothic", sans-serif;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 30, 80, .12), transparent 28%),
+    radial-gradient(circle at 85% 80%, rgba(255, 190, 0, .08), transparent 30%),
+    #080808;
+  color: #fff;
+}
 
-    header {
-      padding: 25px 30px;
-      background: #181818;
-      border-bottom: 1px solid #333;
-    }
+/* HIPHOP / STREET STYLE HEADER */
+header {
+  position: relative;
+  padding: 28px 34px 24px;
+  background:
+    linear-gradient(135deg, #090909 0%, #151515 55%, #0a0a0a 100%);
+  border-bottom: 3px solid #ff1744;
+  overflow: hidden;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: 2px;
-    }
+header::after {
+  content: "MIC • BEAT • BATTLE";
+  position: absolute;
+  right: 28px;
+  bottom: 10px;
+  color: rgba(255,255,255,.06);
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  transform: rotate(-5deg);
+}
 
-    header p {
-      margin: 8px 0 0;
-      color: #aaa;
-    }
+header h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(25px, 4vw, 42px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 4px 4px 0 #ff1744;
+}
 
-    .container {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      min-height: calc(100vh - 100px);
-    }
+header p {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  color: #d6d6d6;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+}
 
-    /* サイドバー */
-    .sidebar {
-      padding: 25px;
-      background: #1b1b1b;
-      border-right: 1px solid #333;
-    }
+/* MAIN LAYOUT */
+.container {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  min-height: calc(100vh - 120px);
+}
 
-    .sidebar h2 {
-      font-size: 18px;
-      margin-top: 0;
-    }
+/* SIDEBAR */
+.sidebar {
+  padding: 25px;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #111 0,
+      #111 8px,
+      #151515 8px,
+      #151515 16px
+    );
+  border-right: 2px solid #292929;
+}
 
-    .control {
-      margin-bottom: 20px;
-    }
+.sidebar h2 {
+  margin: 0 0 25px;
+  padding-bottom: 12px;
+  font-size: 21px;
+  letter-spacing: 2px;
+  border-bottom: 2px solid #ff1744;
+}
 
-    .control label {
-      display: block;
-      margin-bottom: 8px;
-      color: #aaa;
-      font-size: 14px;
-    }
+.sidebar h2::before {
+  content: "◆ ";
+  color: #ff1744;
+}
 
-    select {
-      width: 100%;
-      padding: 12px;
-      background: #292929;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 6px;
-      font-size: 15px;
-    }
+.control {
+  margin-bottom: 22px;
+}
 
-    .stats {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #333;
-    }
+.control label {
+  display: block;
+  margin-bottom: 8px;
+  color: #bbb;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
 
-    .stats-item {
-      margin-bottom: 15px;
-    }
+select {
+  width: 100%;
+  padding: 13px 14px;
+  background: #0b0b0b;
+  color: #fff;
+  border: 1px solid #555;
+  border-left: 4px solid #ff1744;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  transition: .2s;
+}
 
-    .stats-title {
-      color: #999;
-      font-size: 13px;
-    }
+select:hover,
+select:focus {
+  border-color: #ff1744;
+  box-shadow: 0 0 14px rgba(255,23,68,.2);
+}
 
-    .stats-value {
-      font-size: 25px;
-      font-weight: bold;
-    }
+/* STATS */
+.stats {
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 1px dashed #555;
+}
 
-    /* 地図 */
-    #map {
-      width: 100%;
-      height: calc(100vh - 100px);
-      min-height: 600px;
-      background: #101010;
-    }
+.stats-item {
+  margin-bottom: 16px;
+  padding: 13px 14px;
+  background: rgba(0,0,0,.55);
+  border-left: 4px solid #ffd000;
+}
 
-    /* 凡例 */
-    .legend {
-      background: rgba(20, 20, 20, 0.95);
-      padding: 12px;
-      line-height: 22px;
-      color: white;
-      border-radius: 5px;
-    }
+.stats-title {
+  color: #999;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+}
 
-    .legend-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+.stats-value {
+  margin-top: 4px;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
 
-    .legend i {
-      width: 18px;
-      height: 18px;
-      float: left;
-      margin-right: 8px;
-      opacity: 0.9;
-    }
+/* MAP */
+#map {
+  width: 100%;
+  height: calc(100vh - 120px);
+  min-height: 600px;
+  background: #090909;
+}
 
-    /* ポップアップ */
-    .popup {
-      color: #111;
-      min-width: 220px;
-    }
+/* LEGEND */
+.legend {
+  background: rgba(8,8,8,.94);
+  padding: 14px 16px;
+  line-height: 23px;
+  color: #fff;
+  border: 1px solid #555;
+  border-left: 4px solid #ff1744;
+  border-radius: 2px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.5);
+}
 
-    .popup h3 {
-      margin-top: 0;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 8px;
-    }
+.legend-title {
+  font-weight: 900;
+  margin-bottom: 7px;
+  letter-spacing: 1px;
+}
 
-    .winner {
-      padding: 6px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .winner:last-child {
-      border-bottom: none;
-    }
-
-    .winner-name {
-      font-weight: bold;
-    }
-
-    .winner-event {
-      font-size: 12px;
-      color: #777;
-    }
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin: 2px 8px 0 0;
+  opacity: .95;
+}
 
 
-    /* YouTubeプレイヤー */
-    .video-modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+/* RANKING PREFECTURE LINK */
+.ranking-prefecture-link {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .2s ease;
+}
 
-    .video-modal.active {
-      display: flex;
-    }
+.ranking-prefecture-link:hover {
+  color: #ffd000;
+  text-decoration: underline;
+}
 
-    .video-modal-content {
-      width: min(1000px, 95vw);
-      background: #181818;
-      border: 1px solid #444;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
-    }
+/* POPUP WINNER LIST - scroll only inside the white frame */
+.popup-winner-list {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-sizing: border-box;
+}
 
-    .video-modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 12px 16px;
-    }
+.popup-winner-list::-webkit-scrollbar {
+  width: 7px;
+}
 
-    .video-modal-title {
-      font-weight: bold;
-      font-size: 16px;
-    }
+.popup-winner-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 
-    .video-close {
-      border: 0;
-      background: #333;
-      color: #fff;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      font-size: 22px;
-      cursor: pointer;
-    }
+.popup-winner-list::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 4px;
+}
 
-    .video-close:hover {
-      background: #555;
-    }
+.popup-winner-list::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 
-    .video-frame-wrap {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-    }
+/* POPUP */
+.popup {
+  color: #111;
+  min-width: 240px;
+  font-family: Arial, sans-serif;
+}
 
-    .video-frame-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
+.popup h3 {
+  margin-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ff1744;
+  font-weight: 900;
+}
 
-    .video-note {
-      padding: 10px 16px 14px;
-      color: #999;
-      font-size: 12px;
-    }
+.winner {
+  padding: 9px 0;
+  border-bottom: 1px solid #ddd;
+}
 
-    .battle-button {
+.winner:last-child { border-bottom: none; }
+
+.winner-name {
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.winner-event {
+  margin-top: 3px;
+  font-size: 12px;
+  color: #777;
+}
+
+/* YOUTUBE BUTTON */
+.battle-button {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  margin-top: 12px;
-  padding: 9px 15px;
-  border-radius: 8px;
-
-  background: linear-gradient(135deg, #ff0033, #b00020);
+  margin-top: 10px;
+  padding: 9px 14px;
+  border-radius: 2px;
+  background: #ff1744;
   color: #fff;
-
   text-decoration: none;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.3px;
-
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 4px 15px rgba(255, 0, 50, 0.25);
-
-  transition: all 0.25s ease;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .5px;
+  border: 1px solid #ff526f;
+  box-shadow: 4px 4px 0 #111;
+  transition: all .2s ease;
 }
 
 .battle-button:hover {
-  background: linear-gradient(135deg, #ff1744, #ff0033);
-  transform: translateY(-2px);
-  box-shadow:
-    0 0 10px rgba(255, 0, 50, 0.6),
-    0 6px 20px rgba(255, 0, 50, 0.35);
-  color: #fff;
+  background: #ffd000;
+  color: #111;
+  border-color: #ffd000;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #111;
 }
 
-    .no-video {
-      margin-top: 10px;
-      color: #999;
-      font-size: 12px;
-    }
+.no-video {
+  margin-top: 10px;
+  color: #999;
+  font-size: 12px;
+}
 
-    @media (max-width: 800px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
+/* MODAL */
+.video-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,.94);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
 
-      .sidebar {
-        border-right: none;
-        border-bottom: 1px solid #333;
-      }
+.video-modal.active { display: flex; }
 
-      #map {
-        height: 70vh;
-        min-height: 500px;
-      }
-    }
-  </style>
+.video-modal-content {
+  width: min(1000px, 95vw);
+  background: #111;
+  border: 2px solid #ff1744;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(255,23,68,.18);
+}
+
+.video-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 13px 16px;
+  border-bottom: 1px solid #333;
+}
+
+.video-modal-title {
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.video-close {
+  border: 0;
+  background: #ff1744;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.video-close:hover {
+  background: #ffd000;
+  color: #111;
+}
+
+.video-frame-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.video-frame-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-note {
+  padding: 10px 16px 14px;
+  color: #999;
+  font-size: 12px;
+}
+
+
+/* TOP 3 RANKING */
+.ranking-box {
+  border-left-color: #ff1744;
+}
+
+.top-ranking {
+  margin-top: 9px;
+}
+
+.ranking-row {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+}
+
+.ranking-row:last-child {
+  border-bottom: none;
+}
+
+.rank-number {
+  font-size: 18px;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.rank-1 { color: #ffd000; }
+.rank-2 { color: #c8c8c8; }
+.rank-3 { color: #cd7f32; }
+
+.rank-prefecture {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.rank-count {
+  font-size: 12px;
+  color: #bbb;
+  font-weight: 700;
+}
+
+.ranking-empty {
+  color: #888;
+  padding-top: 5px;
+}
+
+/* MOBILE */
+@media (max-width: 800px) {
+  header { padding: 22px 20px; }
+
+  header::after {
+    font-size: 24px;
+    right: 10px;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 2px solid #292929;
+  }
+
+  #map {
+    height: 70vh;
+    min-height: 500px;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
   <h1>MC BATTLE 都道府県勢力図</h1>
-  <p>MCバトル優勝者の出身地を日本地図に可視化</p>
+  <p>MCバトル優勝者の出身地を日本地図に可視化　｜　STREET × MIC × BATTLE</p>
 </header>
 
 <div class="container">
@@ -382,13 +539,13 @@
         </div>
       </div>
 
-      <div class="stats-item">
+      <div class="stats-item ranking-box">
         <div class="stats-title">
-          最多優勝都道府県
+          🏆 優勝都道府県 TOP 3
         </div>
 
-        <div class="stats-value" id="topPrefecture">
-          -
+        <div id="topRanking" class="top-ranking">
+          <div class="ranking-empty">-</div>
         </div>
       </div>
 
@@ -1179,7 +1336,9 @@ const winners = [
 
 const map = L.map("map", {
   zoomControl: true,
-  attributionControl: false
+  attributionControl: false,
+  minZoom: 5,
+  maxZoom: 7
 }).setView([36.2, 138.3], 5);
 
 
@@ -1288,6 +1447,7 @@ function createPopup(prefecture, data) {
       </strong>
 
       <hr>
+      <div class="popup-winner-list">
   `;
 
   data.forEach(winner => {
@@ -1320,7 +1480,7 @@ function createPopup(prefecture, data) {
 
   });
 
-  html += `</div>`;
+  html += `</div></div>`;
 
   return html;
 }
@@ -1482,44 +1642,118 @@ function updateStatistics(
     Object.keys(aggregated).length;
 
 
-  let top =
-    "-";
+  // 優勝回数を多い順に並べ、TOP 3を表示
+  const sortedRanking = Object.entries(aggregated)
+    .map(([prefecture, winners]) => ({
+      prefecture,
+      count: winners.length
+    }))
+    .sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return a.prefecture.localeCompare(b.prefecture, "ja");
+    });
 
+  // 同率は同じ順位にし、次の順位を繰り上げる。
+  // 例：1位、1位、2位、3位、3位、4位…
+  const ranking = [];
+  let rank = 1;
 
-  let max =
-    0;
+  for (let i = 0; i < sortedRanking.length && rank <= 3; ) {
+    const count = sortedRanking[i].count;
 
+    const sameRankItems = sortedRanking.filter(
+      item => item.count === count
+    );
 
-  Object.entries(
-    aggregated
-  ).forEach(
-    ([prefecture, winners]) => {
+    sameRankItems.forEach(item => {
+      ranking.push({
+        ...item,
+        rank
+      });
+    });
 
-      if (
-        winners.length > max
-      ) {
+    rank += 1;
+    i += sameRankItems.length;
+  }
 
-        max =
-          winners.length;
+  // 3位までの順位に該当する都道府県だけ表示
+  const displayRanking = ranking.filter(item => item.rank <= 3);
 
-        top =
-          prefecture +
-          " " +
-          winners.length +
-          "回";
+  const rankingElement = document.getElementById("topRanking");
 
-      }
-
-    }
-  );
-
-
-  document.getElementById(
-    "topPrefecture"
-  ).textContent =
-    top;
+  if (displayRanking.length === 0) {
+    rankingElement.innerHTML = '<div class="ranking-empty">該当データなし</div>';
+  } else {
+    rankingElement.innerHTML = displayRanking.map(item => `
+      <div class="ranking-row">
+        <div class="rank-number rank-${item.rank}">
+          ${item.rank}位
+        </div>
+        <div class="rank-prefecture">
+          <a href="#" class="ranking-prefecture-link"
+             data-prefecture="${item.prefecture}">
+            ${item.prefecture}
+          </a>
+        </div>
+        <div class="rank-count">
+          ${item.count}回
+        </div>
+      </div>
+    `).join("");
+  }
 
 }
+
+
+/* =========================================================
+   ランキングから都道府県へジャンプ
+   ========================================================= */
+
+function focusPrefecture(prefecture) {
+  if (!geoJsonLayer) return;
+
+  let targetLayer = null;
+
+  geoJsonLayer.eachLayer(layer => {
+    const name =
+      layer.feature.properties.nam_ja ||
+      layer.feature.properties.name ||
+      layer.feature.properties.N03_001;
+
+    if (name === prefecture) {
+      targetLayer = layer;
+    }
+  });
+
+  if (!targetLayer) return;
+
+  map.fitBounds(targetLayer.getBounds(), {
+    padding: [40, 40],
+    maxZoom: 7,
+    animate: true
+  });
+
+  targetLayer.setStyle({
+    weight: 4,
+    color: "#ffd000",
+    fillOpacity: 1
+  });
+
+  targetLayer.bringToFront();
+  targetLayer.openPopup();
+
+  setTimeout(() => {
+    if (geoJsonLayer) geoJsonLayer.resetStyle(targetLayer);
+  }, 1400);
+}
+
+document.addEventListener("click", function(e) {
+  const link = e.target.closest(".ranking-prefecture-link");
+  if (!link) return;
+
+  e.preventDefault();
+  focusPrefecture(link.dataset.prefecture);
+});
 
 
 /* =========================================================
